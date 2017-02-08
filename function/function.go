@@ -51,6 +51,7 @@ var defaultPlugins = []string{
 	"golang",
 	"python",
 	"nodejs",
+	"clojure",
 	"java",
 	"env",
 	"shim",
@@ -97,6 +98,7 @@ type Config struct {
 	VPC              vpc.VPC           `json:"vpc"`
 	KMSKeyArn        string            `json:"kms_arn"`
 	DeadLetterARN    string            `json:"deadletter_arn"`
+	ZipPath					 string 					 `json:"zipPath"`
 }
 
 // Function represents a Lambda function, with configuration loaded
@@ -607,6 +609,16 @@ func (f *Function) Build() (io.Reader, error) {
 	if err := f.hookBuild(zip); err != nil {
 		return nil, err
 	}
+
+	// If Plugin provides its own upload package, use that. (Facilitates passing unmolested uberjar)
+  if (f.ZipPath != "") {
+		f.Log.Debugf("Found ZipPath: %s", f.ZipPath)
+  	buf, err := os.Open(f.ZipPath)
+  	if err != nil {
+  		return nil, err
+  	}
+  	return buf, nil
+  }
 
 	paths, err := utils.LoadFiles(f.Path, f.IgnoreFile)
 	if err != nil {
