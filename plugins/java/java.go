@@ -79,6 +79,13 @@ func (p *Plugin) Build(fn *function.Function, zip *archive.Zip) error {
 	defer reader.Close()
 
 	for _, file := range reader.File {
+		// Strip clojure source files to prevent recompilation.
+		parts := strings.Split(file.Name, ".")
+		extension := parts[len(parts) - 1]
+		if extension == "clj" || extension == "cljx" || extension == "cljx" {
+			continue
+		}
+
 		r, err := file.Open()
 		if err != nil {
 			return err
