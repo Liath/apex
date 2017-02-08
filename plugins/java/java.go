@@ -90,7 +90,7 @@ func (p *Plugin) Build(fn *function.Function, zip *archive.Zip) error {
 		}
 		r.Close()
 
-		zip.AddBytes(file.Name, b)
+		zip.AddBytesWTime(file.Name, b, file.ModTime())
 	}
 
 	return nil

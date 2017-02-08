@@ -50,6 +50,27 @@ func (z *Zip) AddBytes(path string, contents []byte) error {
 	return err
 }
 
+// AddBytesWTime add bytes to archive with timestamp
+func (z *Zip) AddBytesWTime(path string, contents []byte, timestamp time.Time) error {
+	z.lock.Lock()
+	defer z.lock.Unlock()
+
+	header := &zip.FileHeader{
+		Name:   path,
+		Method: zip.Deflate,
+	}
+
+	header.SetModTime(timestamp)
+
+	zippedFile, err := z.writer.CreateHeader(header)
+	if err != nil {
+		return err
+	}
+
+	_, err = zippedFile.Write(contents)
+	return err
+}
+
 // AddFile adds a file to archive.
 // AddFile resets mtime.
 func (z *Zip) AddFile(path string, file *os.File) error {
