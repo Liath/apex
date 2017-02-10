@@ -32,7 +32,6 @@ func (p *Plugin) Open(fn *function.Function) error {
   if fn.Runtime != Runtime { 
     return nil 
   } 
-  fn.Runtime = RuntimeCanonical 
  
   if fn.Hooks.Build == "" { 
     fn.Hooks.Build = "lein uberjar && mv target/*-standalone.jar target/apex.jar" 
@@ -42,7 +41,7 @@ func (p *Plugin) Open(fn *function.Function) error {
     fn.Hooks.Clean = "rm -f target &> /dev/null" 
   }
 
-  if len(fn.IgnoreFile) == 0 {
+  if _, err := os.Stat(".apexignore"); err != nil {
     // Since we're deploying a fat jar, we don't need anything else.
     fn.IgnoreFile = []byte(`
 *
