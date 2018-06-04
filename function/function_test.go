@@ -284,7 +284,7 @@ func TestFunction_Rollback_fewVersions(t *testing.T) {
 	}
 	err := fn.Rollback()
 
-	assert.EqualError(t, err, "Can't rollback. Only one version deployed.")
+	assert.EqualError(t, err, "can't rollback. Only one version deployed")
 }
 
 func TestFunction_Rollback_previousVersion(t *testing.T) {
@@ -410,7 +410,7 @@ func TestFunction_RollbackVersion_sameVersion(t *testing.T) {
 	}
 	err := fn.RollbackVersion("2")
 
-	assert.EqualError(t, err, "Specified version currently deployed.")
+	assert.EqualError(t, err, "specified version currently deployed")
 }
 
 func TestFunction_RollbackVersion_success(t *testing.T) {

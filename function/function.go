@@ -99,6 +99,7 @@ type Config struct {
 	KMSKeyArn        string            `json:"kms_arn"`
 	DeadLetterARN    string            `json:"deadletter_arn"`
 	Zip              string            `json:"zip"`
+	BuildArtifact    string            `json:"buildArtifact"`
 }
 
 // Function represents a Lambda function, with configuration loaded
@@ -538,7 +539,7 @@ func (f *Function) Rollback() error {
 	}
 
 	if len(versions) < 2 {
-		return errors.New("Can't rollback. Only one version deployed.")
+		return errors.New("can't rollback. Only one version deployed")
 	}
 
 	latest := *versions[len(versions)-1].Version
@@ -578,7 +579,7 @@ func (f *Function) RollbackVersion(version string) error {
 	f.Log.Debugf("current version: %s", *alias.FunctionVersion)
 
 	if version == *alias.FunctionVersion {
-		return errors.New("Specified version currently deployed.")
+		return errors.New("specified version currently deployed")
 	}
 
 	f.Log.Infof("rollback to version: %s", version)
@@ -635,6 +636,16 @@ func (f *Function) Build() (io.Reader, error) {
 
 	if err := f.hookBuild(zip); err != nil {
 		return nil, err
+	}
+
+	// use Plugin provided upload package if it exists.
+	if f.BuildArtifact != "" {
+		buf, err := os.Open(f.BuildArtifact)
+
+		if err != nil {
+			return nil, err
+		}
+		return buf, nil
 	}
 
 	paths, err := utils.LoadFiles(f.Path, f.IgnoreFile)
@@ -695,9 +706,9 @@ func (f *Function) GroupName() string {
 	return fmt.Sprintf("/aws/lambda/%s", f.FunctionName)
 }
 
-// Return function version from alias name, if alias not found, return the input
+// GetVersionFromAlias returns function version from alias name, if alias not found, return the input
 func (f *Function) GetVersionFromAlias(alias string) (string, error) {
-	var version string = alias
+	var version = alias
 	aliases, err := f.GetAliases()
 	if err != nil {
 		return version, err
