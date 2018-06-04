@@ -1,6 +1,8 @@
 ![Apex Serverless Architecture](assets/title.png)
 
-Apex lets you build, deploy, and manage [AWS Lambda](https://aws.amazon.com/lambda/) functions with ease. With Apex you can use languages that are not natively supported by AWS Lambda, such as Golang, through the use of a Node.js shim injected into the build. A variety of workflow related tooling is provided for testing functions, rolling back deploys, viewing metrics, tailing logs, hooking into the build system and more.
+Apex lets you build, deploy, and manage [AWS Lambda](https://aws.amazon.com/lambda/) functions with ease. With Apex you can use languages that are not natively supported by AWS Lambda through the use of a Node.js shim injected into the build. A variety of workflow related tooling is provided for testing functions, rolling back deploys, viewing metrics, tailing logs, hooking into the build system and more.
+
+This project is designed for event-driven pipelines as it does not abstract away FaaS (functions as a service). If you are building web applications, APIs, or sites, consider using [Apex Up](https://github.com/apex/up), which provides a more out-of-the-box experience for these use-cases.
 
 ## Installation
 
@@ -40,7 +42,7 @@ Example projects for all supported runtimes can be found in [_examples](_example
 
 ## Features
 
-- Supports languages Lambda does not natively support via shim, such as Go
+- Supports languages Lambda does not natively support via shim
 - Binary install (install apex quickly for continuous deployment in CI etc)
 - Hook support for running commands (transpile code, lint, dependency management , etc)
 - Batteries included but optional (opt-in to higher level abstractions)
@@ -188,12 +190,12 @@ See the [Documentation](http://apex.run) for more information.
 
 - [Website](http://apex.run)
 - [Medium](https://medium.com/apex-serverless)
-- [Slack](https://apex-dev.azurewebsites.net/)
+- [Slack](https://chat.apex.sh/)
 
 ---
 
 [![Build Status](https://semaphoreci.com/api/v1/projects/d27ff350-b9c5-4d99-96e5-64b1afb441c5/649392/badge.svg)](https://semaphoreci.com/tj/apex)
-[![Slack Status](https://apex-dev.azurewebsites.net/badge.svg)](https://apex-dev.azurewebsites.net/)
+[![Slack Status](https://apex-slackin.herokuapp.com/badge.svg)](https://apex-slackin.herokuapp.com/)
 [![GoDoc](https://godoc.org/github.com/apex/apex?status.svg)](https://godoc.org/github.com/apex/apex)
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 ![](https://img.shields.io/badge/status-stable-green.svg) [![OpenCollective](https://opencollective.com/apex/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/apex/sponsors/badge.svg)](#sponsors)

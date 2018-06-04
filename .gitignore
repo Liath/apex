@@ -3,3 +3,5 @@
 examples/go/main
 cov.out
 node_modules
+vendor/
+.envrc

@@ -1,4 +1,31 @@
 
+v1.0.0-rc3 / 2018-05-07
+=======================
+
+  * add AWS endpoint flag. Closes #794 (#875)
+  * fix support for >50 lambda versions. Closes https://github.com/apex/apex/issues/846 (#882)
+  * fix broken Slack Status link on website (#880)
+
+v1.0.0-rc2 / 2018-01-17
+=======================
+
+  * add new upgrade mechanism to match Up
+  * add utils from Up which are necessary for upgrade
+  * add native Go support. Closes #864
+
+v0.16.0 / 2017-10-14
+====================
+
+  * add `./vendor`
+  * refactor: move `process.env` out of the shim event handlers
+  * refactor shim, allowing for concurrent calls to handler (#822)
+  * remove analytics. Closes #777
+  * fix node runtime
+  * fix deploying java and clojure functions from zipfile (#820)
+  * fix #815 - clojure deployments being doubled by java plugin (#816)
+  * fix for issue #380 (#814)
+  * fix: move -C chdir flag check to beginning of preparation function. (#766)
+
 v0.15.0 / 2017-06-11
 ====================
 
