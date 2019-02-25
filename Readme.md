@@ -34,6 +34,7 @@ Currently supports:
 - Node.js
 - Golang
 - Python
+- Ruby
 - Java
 - Rust
 - Clojure
@@ -62,6 +63,8 @@ Example projects for all supported runtimes can be found in [_examples](_example
 - Concurrency for quick deploys
 - Dry-run to preview changes
 - VPC support
+- Multiple region support
+- Lambda@Edge support
 
 ## Sponsors
 
@@ -189,7 +192,7 @@ See the [Documentation](http://apex.run) for more information.
 ## Links
 
 - [Website](http://apex.run)
-- [Medium](https://medium.com/apex-serverless)
+- [Medium](https://medium.com/@tjholowaychuk)
 - [Slack](https://chat.apex.sh/)
 
 ---

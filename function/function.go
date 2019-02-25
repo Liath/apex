@@ -50,6 +50,7 @@ var defaultPlugins = []string{
 	"rust-gnu",
 	"golang",
 	"python",
+	"ruby",
 	"nodejs",
 	"java",
 	"clojure",
@@ -98,6 +99,8 @@ type Config struct {
 	VPC              vpc.VPC           `json:"vpc"`
 	KMSKeyArn        string            `json:"kms_arn"`
 	DeadLetterARN    string            `json:"deadletter_arn"`
+	Region           string            `json:"region"`
+	Edge             bool              `json:"edge"`
 	Zip              string            `json:"zip"`
 	BuildArtifact    string            `json:"buildArtifact"`
 }
@@ -934,8 +937,10 @@ func (f *Function) hookDeploy() error {
 // environment for lambda calls.
 func (f *Function) environment() *lambda.Environment {
 	env := make(map[string]*string)
-	for k, v := range f.Environment {
-		env[k] = aws.String(v)
+	if !f.Edge {
+		for k, v := range f.Environment {
+			env[k] = aws.String(v)
+		}
 	}
 	return &lambda.Environment{Variables: env}
 }
@@ -956,4 +961,17 @@ func environ(env map[string]*string) []string {
 	}
 
 	return pairs
+}
+
+// AWSConfig returns AWS configuration if function has specified region.
+func (f *Function) AWSConfig() *aws.Config {
+	region := f.Config.Region
+	if f.Config.Edge {
+		region = "us-east-1"
+	}
+
+	if len(region) > 0 {
+		return aws.NewConfig().WithRegion(region)
+	}
+	return nil
 }

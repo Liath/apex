@@ -6,12 +6,11 @@ import (
 	"github.com/apex/log"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/lambda"
 	"github.com/pkg/errors"
 	"github.com/tj/cobra"
 
-	"github.com/apex/apex/dryrun"
 	"github.com/apex/apex/project"
+	"github.com/apex/apex/service"
 	"github.com/apex/apex/utils"
 )
 
@@ -114,9 +113,11 @@ func Prepare(c *cobra.Command, args []string) error {
 		}
 	}
 
+	configProfile, configRegion, _ := utils.ProfileAndRegionFromConfig(environment)
+
 	// profile from flag, config, env, "default"
 	if profile == "" {
-		profile, _ = utils.ProfileFromConfig(environment)
+		profile = configProfile
 		if profile == "" {
 			profile = os.Getenv("AWS_PROFILE")
 			if profile == "" {
@@ -128,11 +129,14 @@ func Prepare(c *cobra.Command, args []string) error {
 	// the default SharedCredentialsProvider checks the env
 	os.Setenv("AWS_PROFILE", profile)
 
-	// region from flag, env, file
+	// region from flag, config, env, file
 	if region == "" {
-		region = os.Getenv("AWS_REGION")
+		region = configRegion
 		if region == "" {
-			region, _ = utils.GetRegion(profile)
+			region = os.Getenv("AWS_REGION")
+			if region == "" {
+				region, _ = utils.GetRegion(profile)
+			}
 		}
 	}
 
@@ -174,11 +178,9 @@ func Prepare(c *cobra.Command, args []string) error {
 
 	if dryRun {
 		log.SetLevel(log.WarnLevel)
-		Project.Service = dryrun.New(Session)
 		Project.Concurrency = 1
-	} else {
-		Project.Service = lambda.New(Session)
 	}
+	Project.ServiceProvider = service.NewProvider(Session, dryRun)
 
 	return nil
 }

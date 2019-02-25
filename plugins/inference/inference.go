@@ -11,6 +11,7 @@ import (
 	"github.com/apex/apex/plugins/nodejs"
 	"github.com/apex/apex/plugins/python"
 	"github.com/apex/apex/plugins/clojure"
+	"github.com/apex/apex/plugins/ruby"
 )
 
 func init() {
@@ -22,6 +23,7 @@ func init() {
 			"target/apex.jar":     java.Runtime,
 			"build/libs/apex.jar": java.Runtime,
 			"project.clj":         clojure.Runtime,
+			"lambda.rb":           ruby.Runtime,
 		},
 	})
 }
